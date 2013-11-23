@@ -1,15 +1,84 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>Hang Game</title>
+    <title>Hang Game</title>
+    <style type="text/css">
+        body {
+            font-family: Verdana, Geneva, sans-serif;
+            font-size: 100%;
+            line-height: 1.125em;
+        }
+        .secret {
+            font-family: "Lucida Console", Monaco, monospace;
+            font-size: 1.5em;
+            line-height: 2em;
+            letter-spacing: 0.2em;
+            margin-bottom: 5px;
+        }
+        .tryouts li {
+            font-family: "Lucida Console", Monaco, monospace;
+            font-size: 1em;
+            list-style-type: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 1em;
+            min-height: 1em;
+            margin-bottom: 3px;
+            border: 1px solid black;
+            border-radius: 2px;
+        }
+        .tryouts li:nth-child(4n+0) {
+            background-color: #F0E68C;
+        }
+        .tryouts li:nth-child(4n+1) {
+            background-color: #32CD32;
+        }
+        .tryouts li:nth-child(4n+2) {
+            background-color: #F08080;
+        }
+        .tryouts li:nth-child(4n+3) {
+            background-color: #B0C4DE;
+        }
+
+        .won, .lost {
+            line-height: 2em;
+            font-weight: bold;
+        }
+ 
+    </style>
 </head>
 <body>
-    <%= @current_guess %>
+    <div class="secret">
+        <%= if @lost do %>
+            <%= @secret %>
+        <% else %>
+            <%= @current_guess %>
+        <% end %>
+    </div>
     <%= if @won do %>
-    You guessed it correct!
+        <div class="won">
+            You guessed it correct! <a href="/new">New game?</a>
+        </div>
+    <% else %> 
+        <%= if @lost do %>
+            <div class="lost">
+                You lost! <a href="/new">New game?</a>
+            </div>    
+        <% end %>
     <% end %>
-    <%= @wrong_tryouts %>
-    
+ 
+    <%= if length(@tryouts_list) == 0 do %>
+        <div>
+            Hint: Start guessing the secret movie title by pressing a letter from the keyboard.
+        </div>
+    <% else %>
+        <ul class="tryouts">
+        <%= lc x inlist @tryouts_list do %>
+            <li><%= [x] %></li>
+        <% end %>
+        </ul>
+    <% end %>
+
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="250" height="250">
     <%= if @wrong_tryouts > 0 do %>
         <line x1="200" x2="200" y1="200" y2="20" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square" />
@@ -44,14 +113,6 @@
         <input type="text" pattern="[a-z]" autofocus name="letter">
         <input type="submit" value="try">
     </form>
-    <form action="/new" method="post">
-        <input type="submit" value="new game">
-    </form>
-
-    <%= lc x inlist @tryouts_list do %>
-        <span><%= [x] %></span>
-    <% end %>
-
     <script>
         document.onkeypress = function(e) {
             var key = String.fromCharCode(e.keyCode);

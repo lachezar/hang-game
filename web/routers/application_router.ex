@@ -21,9 +21,12 @@ defmodule ApplicationRouter do
   get "/" do
     {conn, secret, tries} = state(conn)
     current_guess = currently_guessed(secret, tries)
+    wrong_attempts = wrong_tryouts(secret, tries)
+    conn = conn.assign(:secret, secret)
     conn = conn.assign(:current_guess, current_guess)
     conn = conn.assign(:won, guessed?(secret, tries))
-    conn = conn.assign(:wrong_tryouts, wrong_tryouts(secret, tries))
+    conn = conn.assign(:lost, wrong_attempts > 8)
+    conn = conn.assign(:wrong_tryouts, wrong_attempts)
     conn = conn.assign(:tryouts_list, tries)
     render conn, "index.html"
   end
@@ -39,7 +42,7 @@ defmodule ApplicationRouter do
     redirect(conn, to: "/")
   end
 
-  post "/new" do
+  get "/new" do
     delete_session(conn, :state) |> redirect(to: "/")
   end
 
