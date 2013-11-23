@@ -20,8 +20,7 @@ defmodule HangGame.Dynamo do
     session_store: Session.CookieStore,
     session_options:
     [ key: "_hang_game_session",
-      secret: "EW0edhc54go9EdxEiSIXC/h065/L5dTkhT4SYurxE9fl7sbWKeKamIV/UfkhJChq"]
-    # todo: generate the secret on server restart
+      secret: :base64.encode(:crypto.strong_rand_bytes(128))]
 
   # Default functionality available in templates
   templates do

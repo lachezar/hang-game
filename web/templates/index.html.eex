@@ -1,13 +1,15 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Hang Game</title>
+    <title>Guess the movie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type="text/css">
         body {
             font-family: Verdana, Geneva, sans-serif;
             font-size: 100%;
             line-height: 1.125em;
         }
+
         .secret {
             font-family: "Lucida Console", Monaco, monospace;
             font-size: 1.5em;
@@ -44,7 +46,16 @@
             line-height: 2em;
             font-weight: bold;
         }
- 
+
+        #try {
+            display: none;
+            position: absolute;
+            right: 1px;
+            top: 1px;
+        }
+        #try input {
+            width: 5em;
+        }
     </style>
 </head>
 <body>
@@ -109,17 +120,21 @@
     <% end %>
     </svg>
 
-    <form id="try" method="post" style="display: none">
-        <input type="text" pattern="[a-z]" autofocus name="letter">
-        <input type="submit" value="try">
+    <form id="try" method="post">
+        <input type="text" pattern="[a-z]" autofocus placeholder="click here" name="letter">
     </form>
     <script>
+        var letter_input = document.querySelector('#try input[name=letter]');
+        var letter_form = document.querySelector('#try');
         document.onkeypress = function(e) {
             var key = String.fromCharCode(e.keyCode);
             if (/^[a-z]$/i.test(key)) {
-                document.querySelector('#try input[name=letter]').value = key;
-                document.querySelector('#try').submit();
+                letter_input.value = key;
+                letter_form.submit();
             }
+        };
+        if ('ontouchstart' in document.documentElement) {
+            letter_form.style.display = 'block';
         }
     </script>
 </body>
