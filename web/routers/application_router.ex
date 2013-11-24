@@ -14,10 +14,6 @@ defmodule ApplicationRouter do
   # routers, forwarding the requests between them:
   # forward "/posts", to: PostsRouter
 
-  def secret_options do 
-    ['happy tree friends', 'how i met your mother', 'heroes']
-  end
-
   get "/" do
     {conn, secret, tries} = state(conn)
     current_guess = currently_guessed(secret, tries)
