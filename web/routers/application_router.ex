@@ -49,7 +49,7 @@ defmodule ApplicationRouter do
   defp state(conn) do
     state = get_session(conn, :state)
     if nil?(state) do
-      secret = generate_secret(secret_options)
+      secret = generate_secret(Secrets.options)
       tries = []
       conn = state_update(conn, secret, tries)
     else
