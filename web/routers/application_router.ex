@@ -23,7 +23,7 @@ defmodule ApplicationRouter do
     conn = conn.assign(:won, guessed?(secret, tries))
     conn = conn.assign(:lost, wrong_attempts > 8)
     conn = conn.assign(:wrong_tryouts, wrong_attempts)
-    conn = conn.assign(:tryouts_list, tries)
+    conn = conn.assign(:tryouts_list, ordered_uniqueue_list(tries))
     render conn, "index.html"
   end
 
@@ -55,7 +55,7 @@ defmodule ApplicationRouter do
   defp state(conn) do
     state = get_session(conn, :state)
     if nil?(state) do
-      secret = Secrets.options |> list_to_bitstring |> generate_secret
+      secret = Secrets.options |> generate_secret
       tries = []
       conn = state_update(conn, secret, tries)
     else

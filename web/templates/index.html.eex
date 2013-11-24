@@ -137,18 +137,37 @@
     </footer>
     
     <script>
-        var letter_input = document.querySelector('#try input[name=letter]');
-        var letter_form = document.querySelector('#try');
-        document.onkeypress = function(e) {
-            var key = String.fromCharCode(e.keyCode);
-            if (/^[a-z]$/i.test(key)) {
-                letter_input.value = key;
-                letter_form.submit();
+        document.addEventListener('DOMContentLoaded', function() {
+            var letter_input = document.querySelector('#try input[name=letter]');
+            var letter_form = document.querySelector('#try');
+            document.onkeypress = function(e) {
+                var key = String.fromCharCode(e.keyCode);
+                if (/^[a-z]$/i.test(key)) {
+                    letter_input.value = key;
+                    letter_form.submit();
+                }
+            };
+            if ('ontouchstart' in document.documentElement) {
+                letter_form.style.display = 'block';
             }
-        };
-        if ('ontouchstart' in document.documentElement) {
-            letter_form.style.display = 'block';
-        }
+
+            setTimeout(function() {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/hint", true);
+                xhr.send();
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        var svg = document.querySelector('svg');
+                        var img = document.createElement('img');
+                        img.src = this.responseText;
+                        img.style.display = 'block';
+                        img.onload = function() {
+                            svg.parentNode.insertBefore(img, svg);
+                        };
+                    }
+                };
+            }, 4000);
+        }, false);
     </script>
 </body>
 </html>
