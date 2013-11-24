@@ -42,10 +42,20 @@ defmodule ApplicationRouter do
     delete_session(conn, :state) |> redirect(to: "/")
   end
 
+  get "/hint" do
+    {conn, secret, _tries} = state(conn)
+    url = secret |> list_to_bitstring |> search_giphy
+    if nil?(url) do
+      conn.send(400, "")
+    else
+      conn.send(200, url)
+    end
+  end
+
   defp state(conn) do
     state = get_session(conn, :state)
     if nil?(state) do
-      secret = generate_secret(Secrets.options)
+      secret = Secrets.options |> list_to_bitstring |> generate_secret
       tries = []
       conn = state_update(conn, secret, tries)
     else

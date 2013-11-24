@@ -21,6 +21,7 @@ defmodule HangGame.Mixfile do
       { :mimetypes, github: "spawngrid/mimetypes", override: true },
       { :dynamo, "~> 0.1.0-dev", github: "elixir-lang/dynamo" },
       { :hackney, github: "benoitc/hackney" },
+      { :json, github: "cblage/elixir-json" },
       { :hang_game_engine, github: "lucho-yankov/hang-game-engine" }
     ]
   end
