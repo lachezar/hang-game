@@ -49,16 +49,29 @@
 
         #try {
             display: none;
-            position: absolute;
-            right: 1px;
-            top: 1px;
         }
         #try input {
-            width: 5em;
+            width: 15em;
+        }
+
+        footer {
+            color: gray;
+            font-size: 0.75em;
+            font-style: italic;
+        }
+
+        a {
+            color: #800000;
         }
     </style>
 </head>
 <body>
+
+    <form id="try" method="post">
+        <input type="text" pattern="[a-z]" autofocus placeholder="click here to show the keyboard" name="letter">
+    </form>
+
+
     <div class="secret">
         <%= if @lost do %>
             <%= @secret %>
@@ -120,9 +133,9 @@
     <% end %>
     </svg>
 
-    <form id="try" method="post">
-        <input type="text" pattern="[a-z]" autofocus placeholder="click here" name="letter">
-    </form>
+    <footer> A tiny Elixir + Dynamo project of Lucho Yankov. <a href="https://github.com/lucho-yankov/hang-game" target="_blank">Check out the source code on GitHub.</a>
+    </footer>
+    
     <script>
         var letter_input = document.querySelector('#try input[name=letter]');
         var letter_form = document.querySelector('#try');
