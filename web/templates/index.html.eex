@@ -76,7 +76,7 @@
         <%= if @lost do %>
             <%= @secret %>
         <% else %>
-            <%= @current_guess %>
+            <%= @partial_guess %>
         <% end %>
     </div>
     <%= if @won do %>
@@ -91,44 +91,44 @@
         <% end %>
     <% end %>
  
-    <%= if length(@tryouts_list) == 0 do %>
+    <%= if length(@attempts_list) == 0 do %>
         <div>
             Hint: Start guessing the secret movie title by pressing a letter from the keyboard.
         </div>
     <% else %>
         <ul class="tryouts">
-        <%= lc x inlist @tryouts_list do %>
+        <%= lc x inlist @attempts_list do %>
             <li><%= [x] %></li>
         <% end %>
         </ul>
     <% end %>
 
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="250" height="250">
-    <%= if @wrong_tryouts > 0 do %>
+    <%= if @incorrect_attempts > 0 do %>
         <line x1="200" x2="200" y1="200" y2="20" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square" />
     <% end %>
-    <%= if @wrong_tryouts > 1 do %>    
+    <%= if @incorrect_attempts > 1 do %>    
         <line x1="100" x2="200" y1="20" y2="20" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square" />
     <% end %>
-    <%= if @wrong_tryouts > 2 do %>    
+    <%= if @incorrect_attempts > 2 do %>    
         <line x1="100" x2="100" y1="20" y2="40" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
-    <%= if @wrong_tryouts > 3 do %>    
+    <%= if @incorrect_attempts > 3 do %>    
         <circle cx="100" cy="56" r="10" stroke="black" stroke-width="5" fill="transparent" />
     <% end %>
-    <%= if @wrong_tryouts > 4 do %>    
+    <%= if @incorrect_attempts > 4 do %>    
         <line x1="100" x2="100" y1="72" y2="130" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
-    <%= if @wrong_tryouts > 5 do %>    
+    <%= if @incorrect_attempts > 5 do %>    
         <line x1="100" x2="75" y1="80" y2="100" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
-    <%= if @wrong_tryouts > 6 do %>    
+    <%= if @incorrect_attempts > 6 do %>    
         <line x1="100" x2="125" y1="80" y2="100" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
-    <%= if @wrong_tryouts > 7 do %>    
+    <%= if @incorrect_attempts > 7 do %>    
         <line x1="100" x2="75" y1="125" y2="170" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
-    <%= if @wrong_tryouts > 8 do %>    
+    <%= if @incorrect_attempts > 8 do %>    
         <line x1="100" x2="125" y1="125" y2="170" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/> 
     <% end %>
     </svg>
@@ -141,7 +141,7 @@
             var letter_input = document.querySelector('#try input[name=letter]');
             var letter_form = document.querySelector('#try');
             document.onkeypress = function(e) {
-                var key = String.fromCharCode(e.keyCode);
+                var key = String.fromCharCode(e.keyCode || e.charCode);
                 if (/^[a-z]$/i.test(key)) {
                     letter_input.value = key;
                     letter_form.submit();

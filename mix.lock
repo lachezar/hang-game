@@ -3,7 +3,7 @@
   "dynamo": {:git, "git://github.com/elixir-lang/dynamo.git", "60212718f3afd94a8fdadcdf0d20271d0d329543", []},
   "hackney": {:git, "git://github.com/benoitc/hackney.git", "5b0f7eb949ebebd6fabfbc4e08a7b7231850606a", []},
   "hang-game-engine": {:git, "git://github.com/lucho-yankov/hang-game-engine.git", "28330a34f99e281468637ebb948749d21ac1b762", []},
-  "hang_game_engine": {:git, "git://github.com/lucho-yankov/hang-game-engine.git", "c6c7b22328c9eeea8a633cf240e5ca83bb84bf20", []},
+  "hang_game_engine": {:git, "git://github.com/lucho-yankov/hang-game-engine.git", "8ea36f57af2631bdd97ec698900268f523aed205", []},
   "json": {:git, "git://github.com/cblage/elixir-json.git", "9b55d6439ce61d7712a1218766c5cfffe011d070", []},
   "mimetypes": {:git, "git://github.com/spawngrid/mimetypes.git", "47d37a977a7d633199822bf6b08353007483d00f", []},
   "ranch": {:git, "git://github.com/extend/ranch.git", "5df1f222f94e08abdcab7084f5e13027143cc222", [{:ref, "0.9.0"}]} ]

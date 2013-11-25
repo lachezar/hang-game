@@ -16,14 +16,14 @@ defmodule ApplicationRouter do
 
   get "/" do
     {conn, secret, tries} = state(conn)
-    current_guess = currently_guessed(secret, tries)
-    wrong_attempts = wrong_tryouts(secret, tries)
+    partial_guess = partial_guess(secret, tries)
+    incorrect_attempts = incorrect_attempts(secret, tries)
     conn = conn.assign(:secret, secret)
-    conn = conn.assign(:current_guess, current_guess)
+    conn = conn.assign(:partial_guess, partial_guess)
     conn = conn.assign(:won, guessed?(secret, tries))
-    conn = conn.assign(:lost, wrong_attempts > 8)
-    conn = conn.assign(:wrong_tryouts, wrong_attempts)
-    conn = conn.assign(:tryouts_list, ordered_uniqueue_list(tries))
+    conn = conn.assign(:lost, incorrect_attempts > 8)
+    conn = conn.assign(:incorrect_attempts, incorrect_attempts)
+    conn = conn.assign(:attempts_list, ordered_uniqueue_list(tries))
     render conn, "index.html"
   end
 
@@ -55,7 +55,7 @@ defmodule ApplicationRouter do
   defp state(conn) do
     state = get_session(conn, :state)
     if nil?(state) do
-      secret = Secrets.options |> generate_secret
+      secret = Secrets.options |> random_element |> bitstring_to_list
       tries = []
       conn = state_update(conn, secret, tries)
     else
