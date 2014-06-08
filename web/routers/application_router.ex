@@ -2,7 +2,7 @@ defmodule ApplicationRouter do
   use Dynamo.Router
 
   import HangGameEngine
-  
+
   prepare do
     # Pick which parts of the request you want to fetch
     # You can comment the line below if you don't need
@@ -34,7 +34,7 @@ defmodule ApplicationRouter do
       {:ok, char} = letter |> String.downcase |> String.to_char_list
       conn = state_update(conn, secret, char ++ tries)
     end
-    
+
     redirect(conn, to: "/")
   end
 
@@ -50,6 +50,11 @@ defmodule ApplicationRouter do
     else
       conn.send(200, url)
     end
+  end
+
+  get "/manifest.webapp" do
+    {conn, secret, tries} = state(conn)
+    render conn, "manifest.webapp"
   end
 
   defp state(conn) do

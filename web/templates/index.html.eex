@@ -63,12 +63,28 @@
         a {
             color: #800000;
         }
+
+        .ff-input {
+            width: 1px;
+            height:1px;
+            position: absolute;
+            top: -20px;
+            left: -20px;
+        }
+        .firefox-os-install, .show-keyboard {
+            display: none;
+            margin: 0 auto;
+        }
+        .center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
+    <button class="firefox-os-install">Install the app</button>
     <form id="try" method="post">
-        <input type="text" pattern="[a-z]" autofocus placeholder="click here to show the keyboard" name="letter">
+        <input type="text" pattern="[a-z]" autofocus placeholder="click here to show the keyboard" name="letter" id="focus">
     </form>
 
 
@@ -83,14 +99,14 @@
         <div class="won">
             You guessed it correct! <a href="/new">New game?</a>
         </div>
-    <% else %> 
+    <% else %>
         <%= if @lost do %>
             <div class="lost">
                 You lost! <a href="/new">New game?</a>
-            </div>    
+            </div>
         <% end %>
     <% end %>
- 
+
     <%= if length(@attempts_list) == 0 do %>
         <div>
             Hint: Start guessing the secret movie title by pressing a letter from the keyboard.
@@ -103,41 +119,46 @@
         </ul>
     <% end %>
 
+    <div class="center">
+      <button class="show-keyboard">Show keyboard</button>
+    </div>
+
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="250" height="250">
     <%= if @incorrect_attempts > 0 do %>
         <line x1="200" x2="200" y1="200" y2="20" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square" />
     <% end %>
-    <%= if @incorrect_attempts > 1 do %>    
+    <%= if @incorrect_attempts > 1 do %>
         <line x1="100" x2="200" y1="20" y2="20" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square" />
     <% end %>
-    <%= if @incorrect_attempts > 2 do %>    
+    <%= if @incorrect_attempts > 2 do %>
         <line x1="100" x2="100" y1="20" y2="40" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
-    <%= if @incorrect_attempts > 3 do %>    
+    <%= if @incorrect_attempts > 3 do %>
         <circle cx="100" cy="56" r="10" stroke="black" stroke-width="5" fill="transparent" />
     <% end %>
-    <%= if @incorrect_attempts > 4 do %>    
+    <%= if @incorrect_attempts > 4 do %>
         <line x1="100" x2="100" y1="72" y2="130" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
-    <%= if @incorrect_attempts > 5 do %>    
+    <%= if @incorrect_attempts > 5 do %>
         <line x1="100" x2="75" y1="80" y2="100" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
-    <%= if @incorrect_attempts > 6 do %>    
+    <%= if @incorrect_attempts > 6 do %>
         <line x1="100" x2="125" y1="80" y2="100" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
-    <%= if @incorrect_attempts > 7 do %>    
+    <%= if @incorrect_attempts > 7 do %>
         <line x1="100" x2="75" y1="125" y2="170" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
-    <%= if @incorrect_attempts > 8 do %>    
-        <line x1="100" x2="125" y1="125" y2="170" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/> 
+    <%= if @incorrect_attempts > 8 do %>
+        <line x1="100" x2="125" y1="125" y2="170" stroke="black" fill="transparent" stroke-width="5" stroke-linecap="square"/>
     <% end %>
     </svg>
 
     <footer> A tiny Elixir + Dynamo project of Lucho Yankov. <a href="https://github.com/lucho-yankov/hang-game" target="_blank">Check out the source code on GitHub.</a>
     </footer>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
             var letter_input = document.querySelector('#try input[name=letter]');
             var letter_form = document.querySelector('#try');
             document.onkeypress = function(e) {
@@ -147,8 +168,21 @@
                     letter_form.submit();
                 }
             };
+
             if ('ontouchstart' in document.documentElement) {
+
                 letter_form.style.display = 'block';
+
+                if (!!navigator.mozApps) {
+                    letter_input.classList.add('ff-input');
+                    letter_input.focus();
+                    var keyboard = document.querySelector('.show-keyboard');
+                    keyboard.style.display = "block";
+                    keyboard.onclick = function() {
+                      letter_input.focus();
+                    };
+                    showFFInstallInstructions();
+                }
             }
 
             setTimeout(function() {
@@ -168,6 +202,25 @@
                 };
             }, 4000);
         }, false);
+
+        var showFFInstallInstructions = function() {
+            var request = navigator.mozApps.getSelf();
+            request.onsuccess = function () {
+                if (request.result === null) {
+                    var button = document.querySelector(".firefox-os-install");
+                    button.style.display = "block";
+                    button.onclick = function() {
+                        var installRequest = navigator.mozApps.install(window.location.origin + "/manifest.webapp");
+                        installRequest.onsuccess = function(data) {
+                            button.style.display = "none";
+                        };
+                        installRequest.onerror = function() {
+                            alert("Install failed:\n\n" + installRequest.error.name);
+                        };
+                    };
+              }
+            };
+        };
     </script>
 
     <!-- env: <%= Mix.env %>  -->

@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "name": "Hangman: Guess the movie",
+  "description": "Guess the movie title or be hanged :P\n If you get stuck, an animated gifs will give you a hint.",
+  "launch_path": "/",
+  "icons": {
+    "60": "/static/icon-60-ff.png",
+    "90": "/static/icon-90-ff.png",
+    "120": "/static/icon-120-ff.png",
+    "128": "/static/icon-128-ff.png",
+    "256": "/static/icon-256-ff.png",
+    "600": "/static/icon-600-ff.png"
+  },
+  "developer": {
+    "name": "Lucho Yankov",
+    "url": "https://github.com/lucho-yankov"
+  },
+  "default_locale": "en"
+}
